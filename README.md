@@ -1,3 +1,8 @@
+Web
+===========================
+https://bitcointalk.org/index.php?topic=896354.0
+
+
 nakamotodark is an X11 PoW and PoS Hybrid Cryptocurrency
 Ticker: NKT
 
