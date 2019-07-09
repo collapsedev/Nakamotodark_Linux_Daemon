@@ -14,6 +14,18 @@ greaterThan(QT_MAJOR_VERSION, 4) {
     DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
 }
 
+
+
+# for boost 1.37, add -mt to the boost libraries
+# use: qmake BOOST_LIB_SUFFIX=-mt
+# for boost thread win32 with _win32 sufix
+# use: BOOST_THREAD_LIB_SUFFIX=_win32-...
+# or when linking against a specific BerkelyDB version: BDB_LIB_SUFFIX=-4.8
+
+# Dependency library locations can be customized with:
+#    BOOST_INCLUDE_PATH, BOOST_LIB_PATH, BDB_INCLUDE_PATH,
+#    BDB_LIB_PATH, OPENSSL_INCLUDE_PATH and OPENSSL_LIB_PATH respectively
+
 windows {
     BOOST_LIB_SUFFIX=-mgw49-mt-s-1_55
     BOOST_INCLUDE_PATH=C:/deps/boost_1_55_0
@@ -28,27 +40,25 @@ windows {
     MINIUPNPC_LIB_PATH=C:/deps/miniupnpc
     QRENCODE_INCLUDE_PATH=C:/deps/qrencode-3.4.3
     QRENCODE_LIB_PATH=C:/deps/qrencode-3.4.3/.libs
-}
-
-# for boost 1.37, add -mt to the boost libraries
-# use: qmake BOOST_LIB_SUFFIX=-mt
-# for boost thread win32 with _win32 sufix
-# use: BOOST_THREAD_LIB_SUFFIX=_win32-...
-# or when linking against a specific BerkelyDB version: BDB_LIB_SUFFIX=-4.8
-
-# Dependency library locations can be customized with:
-#    BOOST_INCLUDE_PATH, BOOST_LIB_PATH, BDB_INCLUDE_PATH,
-#    BDB_LIB_PATH, OPENSSL_INCLUDE_PATH and OPENSSL_LIB_PATH respectively
+} else {
+# Uncomment for portable DB
+# BDB_LIB_SUFFIX=-4.8
+# BDB_INCLUDE_PATH=/usr/include/libdb4/
+# BDB_LIB_PATH=/usr/include/libdb4/
 
 #Force compatible BigNum OpenSSL 1.0.X.
 #Comment this lines if your system has compatible version..
 OPENSSL_INCLUDE_PATH=/usr/local/ssl/include
 OPENSSL_LIB_PATH=/usr/local/ssl/lib
+}
 
 OBJECTS_DIR = build
 MOC_DIR = build
 UI_DIR = build
 
+QMAKE_CXXFLAGS_RELEASE -= -g
+#QMAKE_CXXFLAGS_RELEASE -= -mtune=generic
+#QMAKE_CXXFLAGS_RELEASE += -mtune=native -march=native
 # use: qmake "RELEASE=1"
 contains(RELEASE, 1) {
     # Mac: compile for maximum compatibility (10.5, 32-bit)
